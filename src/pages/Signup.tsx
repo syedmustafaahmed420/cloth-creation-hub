@@ -59,7 +59,7 @@ const Signup = () => {
             </div>
             <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
             <CardDescription className="text-gray-600">
-              Join StyleCo and start shopping
+              Join masa and start shopping
             </CardDescription>
           </CardHeader>
           

@@ -41,7 +41,7 @@ const Login = () => {
             </div>
             <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
             <CardDescription className="text-gray-600">
-              Sign in to your StyleCo account
+              Sign in to your masa account
             </CardDescription>
           </CardHeader>
           

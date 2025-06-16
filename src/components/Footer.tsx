@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -8,7 +7,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">StyleCo</h3>
+            <h3 className="text-2xl font-bold mb-4">masa</h3>
             <p className="text-gray-400 mb-4">
               Premium clothing for the modern lifestyle. Quality, style, and comfort in every piece.
             </p>
@@ -109,7 +108,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 pt-8 text-center">
           <p className="text-gray-400">
-            © 2024 StyleCo. All rights reserved. | Privacy Policy | Terms of Service
+            © 2024 masa. All rights reserved. | Privacy Policy | Terms of Service
           </p>
         </div>
       </div>
