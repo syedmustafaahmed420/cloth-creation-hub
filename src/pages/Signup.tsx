@@ -1,11 +1,14 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, User } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +19,16 @@ const Signup = () => {
     confirmPassword: ""
   });
   const [isLoading, setIsLoading] = useState(false);
+  const { signUp, user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -29,18 +42,37 @@ const Signup = () => {
     setIsLoading(true);
     
     if (formData.password !== formData.confirmPassword) {
-      console.log("Passwords don't match");
+      toast({
+        title: "Error",
+        description: "Passwords don't match",
+        variant: "destructive",
+      });
       setIsLoading(false);
       return;
     }
     
-    // Simulate signup process
-    console.log("Signup attempt:", formData);
+    const { error } = await signUp(
+      formData.email,
+      formData.password,
+      formData.firstName,
+      formData.lastName
+    );
     
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log("Signup successful!");
-    }, 2000);
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Account created! Please check your email to confirm your account.",
+      });
+      navigate("/login");
+    }
+    
+    setIsLoading(false);
   };
 
   return (

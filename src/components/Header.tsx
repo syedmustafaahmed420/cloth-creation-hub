@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag, User, LogIn, Menu, X } from "lucide-react";
+import { ShoppingBag, User, LogIn, Menu, X, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface HeaderProps {
   cartItems: number;
@@ -10,6 +11,11 @@ interface HeaderProps {
 
 const Header = ({ cartItems }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut, loading } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
@@ -41,18 +47,39 @@ const Header = ({ cartItems }: HeaderProps) => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/login">
-              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
-                <LogIn className="h-4 w-4 mr-2" />
-                Login
-              </Button>
-            </Link>
-            <Link to="/signup">
-              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
-                <User className="h-4 w-4 mr-2" />
-                Sign Up
-              </Button>
-            </Link>
+            {loading ? (
+              <div className="text-gray-600">Loading...</div>
+            ) : user ? (
+              <>
+                <span className="text-gray-600">
+                  Welcome, {user.user_metadata?.first_name || user.email}
+                </span>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-gray-600 hover:text-gray-900"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
+                    <User className="h-4 w-4 mr-2" />
+                    Sign Up
+                  </Button>
+                </Link>
+              </>
+            )}
             <Button variant="ghost" size="sm" className="relative text-gray-600 hover:text-gray-900">
               <ShoppingBag className="h-5 w-5" />
               {cartItems > 0 && (
@@ -96,18 +123,39 @@ const Header = ({ cartItems }: HeaderProps) => {
                 Accessories
               </Link>
               <div className="flex items-center space-x-4 pt-4 border-t border-gray-200">
-                <Link to="/login">
-                  <Button variant="ghost" size="sm" className="text-gray-600">
-                    <LogIn className="h-4 w-4 mr-2" />
-                    Login
-                  </Button>
-                </Link>
-                <Link to="/signup">
-                  <Button variant="ghost" size="sm" className="text-gray-600">
-                    <User className="h-4 w-4 mr-2" />
-                    Sign Up
-                  </Button>
-                </Link>
+                {loading ? (
+                  <div className="text-gray-600">Loading...</div>
+                ) : user ? (
+                  <>
+                    <span className="text-gray-600 text-sm">
+                      Welcome, {user.user_metadata?.first_name || user.email}
+                    </span>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-gray-600"
+                      onClick={handleSignOut}
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login">
+                      <Button variant="ghost" size="sm" className="text-gray-600">
+                        <LogIn className="h-4 w-4 mr-2" />
+                        Login
+                      </Button>
+                    </Link>
+                    <Link to="/signup">
+                      <Button variant="ghost" size="sm" className="text-gray-600">
+                        <User className="h-4 w-4 mr-2" />
+                        Sign Up
+                      </Button>
+                    </Link>
+                  </>
+                )}
                 <Button variant="ghost" size="sm" className="relative text-gray-600">
                   <ShoppingBag className="h-5 w-5" />
                   {cartItems > 0 && (
